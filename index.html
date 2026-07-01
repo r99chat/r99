@@ -766,6 +766,53 @@
                 margin: 4px 0;
             }
         }
+
+        /* BTC Support Badge */
+        .btc-support-container {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(13, 13, 13, 0.3);
+            border: 1px dashed var(--border-lead);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .btc-support-container > span {
+            color: var(--text-smoke);
+            font-weight: 500;
+        }
+
+        .btc-address-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            background: var(--bg-matte);
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border-lead);
+        }
+
+        .btc-icon {
+            color: var(--accent-gold);
+            font-size: 0.95rem;
+        }
+
+        #btcAddress {
+            font-family: monospace;
+            color: var(--text-ivory);
+            font-size: 0.72rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex: 1;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -818,6 +865,18 @@
                 <button id="joinRoomBtn" class="btn btn-success">
                     <i class="fa-solid fa-sign-in-alt"></i> Entrar na Sala
                 </button>
+
+                <!-- BTC Support Widget -->
+                <div class="btc-support-container">
+                    <span>Apoie o projeto (BTC):</span>
+                    <div class="btc-address-wrapper">
+                        <i class="fa-brands fa-bitcoin btc-icon"></i>
+                        <span id="btcAddress">bc1q2fudmjvz955t5arpr5npyrwe6c90smrs4l07t3</span>
+                        <button id="copyBtcBtn" class="copy-badge-btn" title="Copiar endereço BTC">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1224,6 +1283,22 @@
                 } else {
                     joinRoomBtn.click();
                 }
+            }
+        });
+
+        // Copy BTC Address Action
+        const copyBtcBtn = document.getElementById('copyBtcBtn');
+        const btcAddressText = document.getElementById('btcAddress').textContent;
+        copyBtcBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(btcAddressText);
+                const originalIcon = copyBtcBtn.innerHTML;
+                copyBtcBtn.innerHTML = '<i class="fa-solid fa-check" style="color: var(--success);"></i>';
+                setTimeout(() => {
+                    copyBtcBtn.innerHTML = originalIcon;
+                }, 2000);
+            } catch (err) {
+                console.error('Falha ao copiar BTC:', err);
             }
         });
     </script>
